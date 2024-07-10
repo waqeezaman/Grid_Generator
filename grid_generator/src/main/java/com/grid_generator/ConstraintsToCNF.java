@@ -5,7 +5,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.FileReader;
-import java.security.cert.CertPathBuilderException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -16,7 +15,6 @@ import java.util.Map;
 import com.cdcl.Formula;
 import com.cdcl.Solver;
 
-import javax.print.DocFlavor.STRING;
 
 
 
@@ -27,27 +25,38 @@ public class ConstraintsToCNF {
 
     private JSONObject tileMappings ; 
 
-    private int Width;
-    private int Height;
+    private int Columns;
+    private int Rows;
 
     // List<HashSet<Integer>> Clauses = new ArrayList<>();
 
 
-    Formula formula;
+    private Formula formula;
     
 
-    public ConstraintsToCNF (String constraints_file, int width, int height) throws Exception{
+    public ConstraintsToCNF (String constraints_file,  int rows, int columns) throws Exception{
+
+
 
         Object obj = new JSONParser().parse(new FileReader( constraints_file )); 
         tileMappings = (JSONObject) obj; 
 
-        Width = width;
-        Height = height;
+        Columns = columns;
+        Rows = rows;
 
 
         for (Object key : tileMappings.keySet()) {
             Tiles.add(key.toString());
+
+            
         }
+
+
+        createCNF();
+
+        
+
+
 
 
     }
@@ -59,9 +68,9 @@ public class ConstraintsToCNF {
 
         for (String tile : Tiles ) {
 
-            for (int x = 0; x<Width; x++){
+            for (int x = 0; x<Columns; x++){
 
-                for( int y =0 ; y<Height ; y++){
+                for( int y =0 ; y<Rows ; y++){
 
                     
                     addClauses(tile, x, y, clause_list);
@@ -74,7 +83,7 @@ public class ConstraintsToCNF {
         clause_list.addAll( getOneTileInEachCellConstraints() );
 
 
-        formula = new Formula(clause_list, Width*Height*Tiles.size());
+        formula = new Formula(clause_list, Columns*Rows*Tiles.size());
                 
         
 
@@ -85,17 +94,30 @@ public class ConstraintsToCNF {
         
         List<HashSet<Integer>> constraints = new ArrayList<>();
 
-        for (int x = 0; x<Width; x++){
-            for( int y =0 ; y<Height ; y++){
+        for (int x = 0; x<Columns; x++){
+            for( int y =0 ; y<Rows ; y++){
         
-                HashSet<Integer> position_constraint = new HashSet<>();
+                HashSet<Integer> at_least_one_literal_true_constraint = new HashSet<>();
                 for (String tile : Tiles ) {
-                    position_constraint.add( getLiteralID(tile, x, y) );
+                    at_least_one_literal_true_constraint.add( getLiteralID(tile, x, y) );
+
+                    // adds the constraint that at most one tile is placed at this location
+                    for(String tile2: Tiles){
+                        if( tile!=tile2){
+                            constraints.add( new HashSet<Integer>( Arrays.asList(-getLiteralID(tile, x, y) , -getLiteralID(tile2, x, y)) ) );
+                        }
+                    }
+
+
+
                 }
 
-                constraints.add(position_constraint);
+                constraints.add(at_least_one_literal_true_constraint);
             }
         }
+
+
+        
 
         return constraints;
                 
@@ -112,9 +134,9 @@ public class ConstraintsToCNF {
 
         // omit certain directions if poisition on border
         if(x!=0)directions.add("left");
-        if(x!=Width-1)directions.add("right");
+        if(x!=Columns-1)directions.add("right");
         if(y!=0)directions.add("up");
-        if(y!=Height-1)directions.add("down");
+        if(y!=Rows-1)directions.add("down");
 
 
 
@@ -159,15 +181,63 @@ public class ConstraintsToCNF {
     
 
     
-
+    // clean this up, check consistency of tile mapping 
     private int getLiteralID(String tile, int x, int y){
 
-        if (((Tiles.indexOf(tile)*Width*Height) + (y*Width) + x + 1) ==0){
+        if (((Tiles.indexOf(tile)*Columns*Rows) + (y*Columns) + x + 1) ==0){
             System.out.println("ERROR X: " + x + " Y: " + y + " Tile Index: "+ Tiles.indexOf(tile));
         }
 
-        return (Tiles.indexOf(tile)*Width*Height) + (y*Width) + x + 1;
+        return to1d(x, y, Tiles.indexOf(tile));//(Tiles.indexOf(tile)*Width*Height) + (y*Width) + x + 1;
 
+    }
+
+    
+
+    private int to1d(int x , int y , int z){
+
+        return (z * Columns * Rows) + (y * Columns) + x +1;
+
+    }
+
+    private int[] to3d(int idx){
+        idx-=1;
+        final int z = idx / (Columns * Rows);
+        idx -= (z * Columns * Rows);
+        final int y = idx / Columns;
+        final int x = idx % Columns;
+        return new int[]{ x, y, z };
+    }
+
+    public  String[][] solutionToGrid(List<Integer> solution){
+
+
+        List<Integer> positive_literals = new ArrayList<>();
+        
+        for (Integer literal : solution) {
+            if(literal>0)positive_literals.add(literal);
+        }
+
+
+        String[][] grid = new String[Rows][Columns];
+        
+        
+        for (Integer positive_literal : positive_literals) {
+            
+            int[] tile_and_position = to3d(positive_literal);
+
+           
+            grid[ tile_and_position[1] ] [tile_and_position[0] ] = Tiles.get(tile_and_position[2]);
+
+        }
+
+        return grid;
+    
+    }
+
+
+    public List<String> getTileStrings(){
+        return Tiles;
     }
 
     public Formula getFormula(){
@@ -175,6 +245,65 @@ public class ConstraintsToCNF {
     }
 
 
+    public List<Integer> getNextSolution( List<Integer> current_solution){
+        if (current_solution==null) return null;
+
+        // add inverse of solution to clause list, only add inverse of positive literals 
+        HashSet<Integer> inverse = new HashSet<>();
+        for (Integer literal : current_solution) {
+            if(literal>0) inverse.add(-literal);
+        }
+
+
+        formula.AddClause(inverse);
+
+        Solver solver = new Solver(formula);
+
+        return solver.Solve();
+    }
+
+    public  List<List<Integer>> getNSolutions( int N){
+        
+        Solver solver = new Solver(formula);
+
+        List< List<Integer>> solutions = new ArrayList<>();
+        List<Integer> current_solution = solver.Solve();
+
+
+        while(current_solution!=null && solutions.size()< N){
+
+            solutions.add(current_solution);
+            current_solution = getNextSolution( current_solution);
+
+        }
+
+
+        return solutions;
+        
+        
+    }
+
+    
+
+    public int getRows(){
+        return Rows;
+    }
+
+    public int getColumns(){
+        return Columns;
+    }
+    
+
+
+
+    public static Formula convertToCNF(String path, int width, int height ) throws Exception{
+
+        ConstraintsToCNF converter = new ConstraintsToCNF(path, width, height);
+
+        converter.createCNF();
+
+        return converter.formula;
+    }
     public static void main( String[] args ) throws Exception
     {
         System.out.println( "Hello World!" );

@@ -1,0 +1,86 @@
+{
+    "background":{
+        "up":["background","bottom_column","row","left_row","right_row","bottom_left","bottom_right"],
+        "left":["background","column","top_column","bottom_column","right_row","top_right","bottom_right"],
+        "down":["background","top_column","row","left_row","right_row","top_left","top_right"],
+        "right":["background","column","top_column","bottom_column","left_row","top_left","bottom_left"]
+    },
+
+    "column":{
+        "up":["column","top_column","top_left","top_right"],
+        "left":["background"],
+        "down":["column","bottom_column","bottom_left","bottom_right"],
+        "right":["background"]
+    },
+    "top_column":{
+        "up":["background"],
+        "left":["background"],
+        "down":["column","bottom_column","bottom_left","bottom_right"],
+        "right":["background"]
+    },
+    "bottom_column":{
+        "up":["column","top_column","top_right","top_left"],
+        "left":["background"],
+        "down":["background"],
+        "right":["background"]
+    },
+
+    "row":{
+        "up":["background"],
+        "left":["row","left_row","bottom_left","top_left"],
+        "down":["background"],
+        "right":["row","right_row","bottom_right","top_right"]
+    },
+    "left_row":{
+        "up":["background"],
+        "left":["background"],
+        "down":["background"],
+        "right":["row","right_row","bottom_right","top_right"]
+    },
+    "right_row":{
+        "up":["background"],
+        "left":["row","left_row","bottom_left","top_left"],
+        "down":["background"],
+        "right":["background"]
+    },
+
+
+
+    "top_left":{
+        "up":["background"],
+        "left":["background"],
+        "down":["column","bottom_column"],
+        "right":["row","right_row"]
+    },
+
+    "top_right":{
+        "up":["background"],
+        "left":["row","left_row"],
+        "down":["column","bottom_column"],
+        "right":["background"]
+    },
+    "bottom_left":{
+        "up":["column","top_column"],
+        "left":["background"],
+        "down":["background"],
+        "right":["row","right_row"]
+    },
+    "bottom_right":{
+        "up":["column","top_column"],
+        "left":["row","left_row"],
+        "down":["background"],
+        "right":["background"]
+    }
+
+
+    
+
+
+
+
+
+   
+
+
+
+}

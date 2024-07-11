@@ -18,7 +18,7 @@ import com.cdcl.Solver;
 
 
 
-public class ConstraintsToCNF {
+public class ConstraintHandler {
 
 
     private List<String> Tiles = new ArrayList<>();
@@ -28,18 +28,17 @@ public class ConstraintsToCNF {
     private int Columns;
     private int Rows;
 
-    // List<HashSet<Integer>> Clauses = new ArrayList<>();
-
-
     private Formula formula;
     
 
-    public ConstraintsToCNF (String constraints_file,  int rows, int columns) throws Exception{
+    public ConstraintHandler (String constraints_file,  int rows, int columns) throws Exception{
 
 
 
         Object obj = new JSONParser().parse(new FileReader( constraints_file )); 
         tileMappings = (JSONObject) obj; 
+
+        
 
         Columns = columns;
         Rows = rows;
@@ -298,43 +297,13 @@ public class ConstraintsToCNF {
 
     public static Formula convertToCNF(String path, int width, int height ) throws Exception{
 
-        ConstraintsToCNF converter = new ConstraintsToCNF(path, width, height);
+        ConstraintHandler converter = new ConstraintHandler(path, width, height);
 
         converter.createCNF();
 
         return converter.formula;
     }
-    public static void main( String[] args ) throws Exception
-    {
-        System.out.println( "Hello World!" );
-
-        ConstraintsToCNF converter = new ConstraintsToCNF("/home/waqee/Grid_Generator/grid_generator/example.json", 3, 3);
-        converter.createCNF();
-
-
-        Solver solver = new Solver(converter.getFormula());
-
-
-        converter.formula.OutputClauses();
-
-
-        List<Integer> solution = solver.Solve();
-
-        int positives = 0;
-        for (Integer integer : solution) {
-            if(integer>0){
-                positives+=1;
-            }
-        }
-
-        System.out.println(positives);
-
-
-        System.out.println(solution);
-
-        
-        
-    }
+   
 
 
 

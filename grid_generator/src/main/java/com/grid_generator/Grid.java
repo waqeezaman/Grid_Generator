@@ -2,8 +2,9 @@ package com.grid_generator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+
 import java.util.List;
+
 
 import com.cdcl.*;
 
@@ -12,26 +13,31 @@ import processing.core.PImage;
 
 public class Grid extends PApplet{
 
-    ConstraintsToCNF constraintHandler;
+    ConstraintHandler constraintHandler;
 
-    char getNext10SolutionsKey = '1';
-    char getNext100SolutionsKey = '2';
-    char getNext1000SolutionsKey = '3';
+    char getNextSolutionKey ='1';
+    char getNext10SolutionsKey = '2';
+    char getNext100SolutionsKey = '3';
+    char getNext1000SolutionsKey = '4';
 
     Formula formula;
 
-    int rows = 3; 
-    int columns = 3;
+    int rows = 30; 
+    int columns = 30;
 
     int panelWidth = 500;
 
-    int width = 1000;
-    int height = 1000;
+    int width = 1200;
+    int height = 1200;
 
     List<List<Integer>> allSolutions;
     int currentSolution =0;
+    boolean totalSolutionsReached = false;
+
 
     HashMap<String, PImage> TileImages = new HashMap<>();
+
+    String tilemapDirectory = "/home/waqee/Grid_Generator/grid_generator/Tilemaps/Tilemap7/";
 
    
     
@@ -45,20 +51,22 @@ public class Grid extends PApplet{
 
 
     public void setup(){
-        frameRate(100);
+        frameRate(1);
+
+        Solver.setConfig(64, 1.1f, 0.5f, 0.3f, 2, null,"random",null, null);
 
         try {
-            constraintHandler =  new ConstraintsToCNF("/home/waqee/Grid_Generator/grid_generator/Tilemap2/constraints.json", rows, columns );
+            constraintHandler =  new ConstraintHandler(tilemapDirectory+"constraints.json", rows, columns );
         } catch (Exception e) {
             System.out.println("Constraint File Not Found");
             System.exit(0);
         }
 
 
+        // load all the images for the tiles
         for (String tile_name : constraintHandler.getTileStrings()) {
-            
             if( !TileImages.containsKey(tile_name))
-                TileImages.put(tile_name, loadImage("/home/waqee/Grid_Generator/grid_generator/Tilemap2/Tiles/"+tile_name+".jpg"));
+                TileImages.put(tile_name, loadImage(tilemapDirectory+"Tiles/"+tile_name+".png"));
 
         }
 
@@ -67,44 +75,24 @@ public class Grid extends PApplet{
         allSolutions = new ArrayList<>();
 
 
-        System.out.println("CREATED INITIAL FORMULA");
         allSolutions = constraintHandler.getNSolutions(1);
-        System.out.println("SOLVED N TIMES");
-
-
         
-       
-
-        System.out.println("SOLUTIONS SIZE: " + allSolutions.size());
-
-
-
-
-        String[][] string_grid = constraintHandler.solutionToGrid(allSolutions.get(0));
-        drawSolution(string_grid);
-
-       
-
-
-
-
-        
-        
-
-
-
 
     }
+
+
 
     public void draw(){
-
+        background(225);
         currentSolution+=1;
         if(currentSolution%allSolutions.size()==0)currentSolution=0;
-        System.out.println("CURRENT SOLUTION: "+ currentSolution);
+
         drawSolution(constraintHandler.solutionToGrid(allSolutions.get(currentSolution)));
 
-
+        updatePanel();
     }
+
+
 
 
 
@@ -130,33 +118,81 @@ public class Grid extends PApplet{
 
     }
 
+    public void updatePanel(){
+        updateSolutionsText();
 
 
-    public void keyPressed(){
-        drawSolution( constraintHandler.solutionToGrid(allSolutions.get(currentSolution))  );
-        System.out.println("MOUSE PRESSED");
-        currentSolution+=1;
+        textSize(16);
+        fill(0);
+
+
+
+        text("Press 1 to Add The Next Solution", width+30, width-200);
+        text("Press 2 to Add The Next 10 Solutions", width+30, width-160);
+        text("Press 3 to Add The Next 100 Solutions", width+30, width-120);
+        text("Press 4 to Add The Next 1000 Solutions", width+30, width-80);
+
+        
     }
+
+    public void updateSolutionsText(){
+
+        textSize(32);
+        fill(0);
+
+
+
+        text("Current Solution: ", width+30, 50);
+        text((currentSolution+1)+"/"+allSolutions.size(), width+30, 90);
+
+        if(totalSolutionsReached){
+            textSize(16);
+            fill(220, 0, 0);
+            text("Total Number Of Solutions Reached ", width+30, 110);
+        }
+    }
+
+
+
+
+
+
+    
 
     public void keyReleased(){
         
 
-        if( key == getNext10SolutionsKey){
-            allSolutions.addAll( constraintHandler.getNSolutions(10) );
+        if( key == getNextSolutionKey){
+            addSolutions(1);
+        }
+        else if( key == getNext10SolutionsKey){
+            addSolutions(10);
         }
         else if( key == getNext100SolutionsKey){
-            allSolutions.addAll( constraintHandler.getNSolutions(100) );
+            addSolutions(100);
         }
         else if( key == getNext1000SolutionsKey){
-            allSolutions.addAll( constraintHandler.getNSolutions(1000) );
+            addSolutions(1000);
         }
+
+
+
+
+
     }
 
-    public void mousePressed(){
-        drawSolution( constraintHandler.solutionToGrid(allSolutions.get(currentSolution))  );
-        System.out.println("MOUSE PRESSED");
-        currentSolution+=1;
+    public void addSolutions(int n){
+        List<List<Integer>> new_solutions = constraintHandler.getNSolutions(n);
+
+        if(new_solutions.size()<n){
+            totalSolutionsReached = true;
+        }
+
+        allSolutions.addAll(new_solutions);
+
     }
+
+   
 
 
 

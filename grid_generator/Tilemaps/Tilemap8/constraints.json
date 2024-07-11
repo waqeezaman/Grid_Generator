@@ -1,0 +1,53 @@
+{
+   
+    
+    "sky":{
+     "up":["sky"],
+     "left":["sky","grass","grass_right"],
+     "down":["sky","grass","grass_right","grass_left"],
+     "right":["sky","grass","grass_left"]
+ 
+    },
+    "mountain":{
+     "up":["mountain","grass","grass_right","grass_left"],
+     "left":["mountain","grass","grass_left","grass_right"],
+     "down":["mountain"],
+     "right":["mountain","grass","grass_right","grass_left"]
+ 
+    },
+    "grass":{
+       "up":["sky"],
+       "left":["grass","grass_left","grass_right"],
+       "down":["mountain"],
+       "right":["grass","grass_right","grass_left"]
+   
+      },
+      "grass_left":{
+       "up":["sky"],
+       "left":["sky"],
+       "down":["mountain"],
+       "right":["grass","mountain"]
+   
+      },
+      "grass_right":{
+       "up":["sky"],
+       "left":["mountain","grass"],
+       "down":["mountain"],
+       "right":["sky"]
+   
+      }
+ 
+ 
+ 
+ 
+     
+ 
+ 
+ 
+ 
+ 
+    
+ 
+ 
+ 
+ }

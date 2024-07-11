@@ -1,0 +1,80 @@
+{
+  
+   "column":{
+       "up":["column","top_column","top_left","top_right"],
+       "left":["column","right_row","bottom_column","top_column","bottom_right","top_right"],
+       "down":["column","bottom_column","bottom_left","bottom_right"],
+       "right":["column","left_row","bottom_column","top_column","bottom_left","top_left"]
+   },
+   "top_column":{
+       "up":["bottom_column","row","left_row","right_row","bottom_left","bottom_right"],
+       "left":["column","right_row","bottom_column","top_column","bottom_right","top_right"],
+       "down":["column","bottom_column","bottom_left","bottom_right"],
+       "right":["column","left_row","bottom_column","top_column","bottom_left","top_left"]
+   },
+   "bottom_column":{
+       "up":["column","top_column","top_right","top_left"],
+       "left":["column","right_row","bottom_column","top_column","bottom_right","top_right"],
+       "down":["row","left_row","right_row","top_left","top_right"],
+       "right":["column","left_row","bottom_column","top_column","bottom_left","top_left"]
+   },
+
+   "row":{
+       "up":["bottom_column","bottom_left","bottom_right","row","left_row","right_row"],
+       "left":["row","left_row","bottom_left","top_left"],
+       "down":["top_column","top_left","top_right","row","left_row","right_row"],
+       "right":["row","right_row","bottom_right","top_right"]
+   },
+   "left_row":{
+       "up":["bottom_column","bottom_left","bottom_right","row","left_row","right_row"],
+       "left":["right_row","top_right","bottom_right","column","top_column","bottom_column"],
+       "down":["top_column","top_left","top_right","row","left_row","right_row"],
+       "right":["row","right_row","bottom_right","top_right"]
+   },
+   "right_row":{
+       "up":["bottom_column","bottom_left","bottom_right","row","left_row","right_row"],
+       "left":["row","left_row","bottom_left","top_left"],
+       "down":["top_column","top_left","top_right","row","left_row","right_row"],
+       "right":["left_row","bottom_left","top_left","column","top_column","bottom_column"]
+   },
+
+
+
+   "top_left":{
+       "up":["row","left_row","right_row","bottom_column","bottom_left","bottom_right"],
+       "left":["column","top_column","bottom_column","top_right","bottom_right","right_row"],
+       "down":["column","bottom_column","bottom_left","bottom_right"],
+       "right":["row","right_row","bottom_right","top_right"]
+   },
+
+   "top_right":{
+       "up":["row","left_row","right_row","bottom_column","bottom_left","bottom_right"],
+       "left":["row","left_row","bottom_left","top_left"],
+       "down":["column","bottom_column","bottom_left","bottom_right"],
+       "right":["column","top_column","bottom_column","left_row","bottom_left","top_left"]
+   },
+   "bottom_left":{
+       "up":["column","top_column","top_left","top_right"],
+       "left":["column","top_column","bottom_column","right_row","top_right","bottom_right"],
+       "down":["top_column","top_left","top_right","row","left_row","right_row"],
+       "right":["row","right_row"]
+   },
+   "bottom_right":{
+       "up":["column","top_column","top_left","top_right"],
+       "left":["row","left_row","bottom_left","top_left"],
+       "down":["top_column","top_left","top_right","row","left_row","right_row"],
+       "right":["column","top_column","bottom_column","left_row","bottom_left","top_left"]
+   }
+
+
+   
+
+
+
+
+
+  
+
+
+
+}

@@ -1,0 +1,43 @@
+{
+
+    "blue":{
+        "up":["purple"],
+        "left":["purple"],
+        "down":["purple"],
+        "right":["purple"]
+    },
+    
+    "green":{
+        "up":["red"],
+        "left":["red"],
+        "down":["red"],
+        "right":["red"]
+    },
+    "purple":{
+        "up":["blue","yellow","purple"],
+        "left":["blue","yellow","purple"],
+        "down":["blue","yellow","purple"],
+        "right":["blue","yellow","purple"]
+    },
+    "red":{
+        "up":["green","yellow","red"],
+        "left":["green","yellow","red"],
+        "down":["green","yellow","red"],
+        "right":["green","yellow","red"]
+    },
+    "yellow":{
+        "up":["green","red","yellow","purple"],
+        "left":["purple","yellow","green","red"],
+        "down":["red","green","yellow","purple"],
+        "right":["purple","yellow","green","red"]
+    }
+
+
+
+
+
+   
+
+
+
+}

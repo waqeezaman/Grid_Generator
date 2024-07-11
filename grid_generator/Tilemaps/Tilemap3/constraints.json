@@ -1,0 +1,36 @@
+{
+
+    "square":{
+        "up":["bottom_left","bottom_right"],
+        "left":["bottom_right","top_right"],
+        "down":["top_left","top_right"],
+        "right":["bottom_left","top_left"]
+    },
+    "top_left":{
+        "up":["bottom_right","square"],
+        "left":["bottom_right","top_right","square"],
+        "down":["bottom_left","bottom_right","top_left","top_right"],
+        "right":["bottom_left","bottom_right","top_left","top_right"]
+    },
+    "top_right":{
+        "up":["bottom_left","square"],
+        "left":["bottom_left","bottom_right","top_left","top_right"],
+        "down":["bottom_left","bottom_right","top_left","top_right"],
+        "right":["top_left","bottom_left","square"]
+    },
+    "bottom_left":{
+        "up":["bottom_left","bottom_right","top_left","top_right"],
+        "left":["square","bottom_right","top_right"],
+        "down":["square","top_right"],
+        "right":["bottom_left","bottom_right","top_left","top_right"]
+    },
+    "bottom_right":{
+        "up":["bottom_left","bottom_right","top_left","top_right"],
+        "left":["bottom_left","bottom_right","top_left","top_right"],
+        "down":["square","top_left"],
+        "right":["top_left","top_right","square"]
+    }
+
+    
+
+}

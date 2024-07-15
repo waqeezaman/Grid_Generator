@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>com.waqee</groupId>
+  <artifactId>cdcl</artifactId>
+  <version>1.51-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20240715.161408</timestamp>
+      <buildNumber>1</buildNumber>
+    </snapshot>
+    <lastUpdated>20240715161408</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>jar</extension>
+        <value>1.51-20240715.161408-1</value>
+        <updated>20240715161408</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>1.51-20240715.161408-1</value>
+        <updated>20240715161408</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>

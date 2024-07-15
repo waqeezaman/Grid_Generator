@@ -46,7 +46,7 @@
   <dependency>
       <groupId>com.waqee</groupId>
       <artifactId>cdcl</artifactId>
-      <version>1.51-SNAPSHOT</version>
+      <version>1.6-SNAPSHOT</version>
   </dependency>
 
   <!-- https://mvnrepository.com/artifact/org.processing/core -->

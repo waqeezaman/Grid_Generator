@@ -22,8 +22,8 @@ public class Grid extends PApplet{
 
     Formula formula;
 
-    int rows = 30; 
-    int columns = 30;
+    int rows = 7; 
+    int columns = 7;
 
     int panelWidth = 500;
 
@@ -37,7 +37,7 @@ public class Grid extends PApplet{
 
     HashMap<String, PImage> TileImages = new HashMap<>();
 
-    String tilemapDirectory = "/home/waqee/Grid_Generator/grid_generator/Tilemaps/Tilemap7/";
+    String tilemapDirectory = "/home/waqee/Grid_Generator/grid_generator/Tilemaps/Tilemap1/";
 
    
     
@@ -53,7 +53,7 @@ public class Grid extends PApplet{
     public void setup(){
         frameRate(1);
 
-        Solver.setConfig(64, 1.1f, 0.5f, 0.3f, 2, null,"random",null, null);
+        Solver.setConfig(1, 1.2f, 0.95f, 0.3f, 10, null,"random",null, null);
 
         try {
             constraintHandler =  new ConstraintHandler(tilemapDirectory+"constraints.json", rows, columns );

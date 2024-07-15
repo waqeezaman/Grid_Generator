@@ -37,7 +37,7 @@ public class Grid extends PApplet{
 
     HashMap<String, PImage> TileImages = new HashMap<>();
 
-    String tilemapDirectory = "/home/waqee/Grid_Generator/grid_generator/Tilemaps/Tilemap1/";
+    String tilemapDirectory = "Tilemaps/Tilemap1/";
 
    
     
